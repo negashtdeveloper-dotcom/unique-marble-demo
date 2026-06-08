@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get a Quote — Unique Marble | Vaughan, ON</title>
+  <meta name="description" content="Request a personalized quote for porcelain slabs, natural marble, or tiles. Get your estimate within 24 hours.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+  /* ── Quote page overrides & additions ───────────────── */
+  .quote-hero {
+    background: linear-gradient(160deg, #1A1614 0%, #2E2825 100%);
+    padding: 3rem 0 2.5rem;
+    text-align: center;
+  }
+  .quote-hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #fff;
+    margin-bottom: .6rem;
+  }
+  .quote-hero h1 em { color: #C49B3C; font-style: normal; }
+  .quote-hero p {
+    color: rgba(255,255,255,.6);
+    font-size: 1rem;
+    max-width: 44ch;
+    margin: 0 auto 2rem;
+  }
+
+  /* ── Progress bar ────────────────────────────────────── */
+  .progress-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+  .prog-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .prog-step::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,.15);
+    z-index: -1;
+  }
+  .prog-step:last-child::after { display: none; }
+  .prog-step.done::after { background: #C49B3C; }
+  .prog-num {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.2);
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.5);
+    font-size: .85rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .3s;
+  }
+  .prog-step.active .prog-num {
+    background: #C49B3C; border-color: #C49B3C; color: #1A1614;
+  }
+  .prog-step.done .prog-num {
+    background: #C49B3C; border-color: #C49B3C; color: #1A1614;
+  }
+  .prog-label {
+    font-size: .68rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .08em;
+    color: rgba(255,255,255,.4); white-space: nowrap;
+  }
+  .prog-step.active .prog-label,
+  .prog-step.done .prog-label { color: #C49B3C; }
+
+  /* ── Form wrapper ────────────────────────────────────── */
+  .quote-body {
+    background: #F7F4F0;
+    padding: 3rem 0 5rem;
+    min-height: 60vh;
+  }
+  .quote-card {
+    background: #fff;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 30px rgba(0,0,0,.08);
+    max-width: 740px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .quote-card-hdr {
+    background: linear-gradient(135deg, #1A1614, #2E2825);
+    padding: 1.25rem 1.75rem;
+    display: flex; align-items: center; gap: .75rem;
+  }
+  .quote-card-hdr .step-icon {
+    font-size: 1.5rem;
+    width: 44px; height: 44px;
+    border-radius: .65rem;
+    background: rgba(196,155,60,.15);
+    border: 1px solid rgba(196,155,60,.3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .quote-card-hdr h2 {
+    font-size: 1.15rem; color: #fff; font-family: 'Playfair Display', serif;
+    margin-bottom: .1rem;
+  }
+  .quote-card-hdr p { font-size: .8rem; color: rgba(255,255,255,.5); }
+  .quote-card-body { padding: 1.75rem; }
+
+  /* ── Step panels ─────────────────────────────────────── */
+  .step-panel { display: none; }
+  .step-panel.active { display: block; }
+
+  /* ── Field label ─────────────────────────────────────── */
+  .field-label {
+    font-size: .78rem; font-weight: 700; color: #5A4E45;
+    text-transform: uppercase; letter-spacing: .06em;
+    margin-bottom: .55rem; display: block;
+  }
+  .field-group { margin-bottom: 1.35rem; }
+
+  /* ── Choice cards (application type, service, budget) ── */
+  .choice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: .7rem;
+  }
+  .choice-grid.two-col { grid-template-columns: 1fr 1fr; }
+  .choice-card {
+    border: 2px solid #E4DDD5;
+    border-radius: .85rem;
+    padding: .9rem .85rem;
+    cursor: pointer;
+    text-align: center;
+    background: #F7F4F0;
+    transition: all .18s;
+    user-select: none;
+    position: relative;
+  }
+  .choice-card:hover {
+    border-color: #C49B3C;
+    background: #FEF8E8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(196,155,60,.15);
+  }
+  .choice-card.selected {
+    border-color: #C49B3C;
+    background: #FEF8E8;
+    box-shadow: 0 0 0 3px rgba(196,155,60,.18);
+  }
+  .choice-card.selected::after {
+    content: '✓';
+    position: absolute; top: .4rem; right: .5rem;
+    font-size: .75rem; font-weight: 700;
+    color: #C49B3C;
+  }
+  .choice-icon { font-size: 1.75rem; margin-bottom: .4rem; }
+  .choice-label {
+    font-size: .82rem; font-weight: 600; color: #1A1614;
+    line-height: 1.3;
+  }
+  .choice-sub { font-size: .72rem; color: #9A8A7A; margin-top: .15rem; }
+
+  /* Budget pills (horizontal) */
+  .budget-pills { display: flex; gap: .45rem; flex-wrap: wrap; }
+  .budget-pill {
+    padding: .45rem 1rem;
+    border: 2px solid #E4DDD5;
+    border-radius: 999px;
+    font-size: .82rem; font-weight: 600; color: #5A4E45;
+    cursor: pointer; background: #F7F4F0;
+    transition: all .18s;
+    user-select: none;
+  }
+  .budget-pill:hover { border-color: #C49B3C; color: #1A1614; }
+  .budget-pill.selected {
+    background: #1A1614; border-color: #1A1614; color: #fff;
+  }
+
+  /* ── Material selector (Step 2) ──────────────────────── */
+  .mat-tabs {
+    display: flex; gap: .4rem; margin-bottom: 1.1rem;
+    border-bottom: 2px solid #E4DDD5; padding-bottom: 0;
+  }
+  .mat-tab {
+    padding: .5rem .9rem;
+    font-size: .82rem; font-weight: 600; color: #9A8A7A;
+    cursor: pointer; border-bottom: 2.5px solid transparent;
+    margin-bottom: -2px; transition: all .18s;
+  }
+  .mat-tab:hover { color: #5A4E45; }
+  .mat-tab.active { color: #1A1614; border-bottom-color: #C49B3C; }
+  .mat-panel { display: none; }
+  .mat-panel.active { display: grid; }
+
+  .mat-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: .75rem; margin-bottom: 1rem;
+  }
+  .mat-card {
+    border-radius: .85rem; overflow: hidden;
+    border: 2px solid #E4DDD5; cursor: pointer;
+    transition: all .18s; background: #fff;
+    position: relative;
+  }
+  .mat-card:hover {
+    border-color: #C49B3C;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.1);
+  }
+  .mat-card.selected {
+    border-color: #C49B3C;
+    box-shadow: 0 0 0 3px rgba(196,155,60,.2);
+  }
+  .mat-card.selected::after {
+    content: '✓';
+    position: absolute; top: .4rem; right: .5rem;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #C49B3C; color: #fff;
+    font-size: .7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mat-swatch { height: 100px; }
+  .mat-info { padding: .55rem .6rem .5rem; }
+  .mat-name { font-size: .8rem; font-weight: 700; color: #1A1614; }
+  .mat-type { font-size: .68rem; color: #9A8A7A; margin-top: .1rem; }
+  /* Reuse CSS marble textures from styles.css */
+
+  /* ── Calculator ───────────────────────────────────────── */
+  .calc-box {
+    background: linear-gradient(135deg, #1A1614 0%, #2E2825 100%);
+    border-radius: .85rem; padding: 1.25rem; margin-top: 1rem;
+  }
+  .calc-box h4 { color: #fff; font-size: .88rem; font-weight: 700; margin-bottom: 1rem; }
+  .calc-inputs {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: .65rem; margin-bottom: .85rem;
+  }
+  .calc-field label {
+    display: block; font-size: .68rem; font-weight: 700;
+    color: rgba(255,255,255,.5); text-transform: uppercase;
+    letter-spacing: .06em; margin-bottom: .3rem;
+  }
+  .calc-field input, .calc-field select {
+    width: 100%; padding: .5rem .7rem;
+    background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15);
+    border-radius: .55rem; font-size: .85rem; color: #fff; outline: none;
+    transition: border-color .18s;
+  }
+  .calc-field input::placeholder { color: rgba(255,255,255,.3); }
+  .calc-field input:focus,
+  .calc-field select:focus { border-color: #C49B3C; }
+  .calc-field select option { background: #1A1614; color: #fff; }
+  .calc-result {
+    background: rgba(196,155,60,.12); border: 1px solid rgba(196,155,60,.3);
+    border-radius: .65rem; padding: .75rem 1rem;
+    font-size: .85rem; color: rgba(255,255,255,.8); line-height: 1.6;
+  }
+  .calc-result strong { color: #C49B3C; }
+
+  /* ── Selected summary chip ────────────────────────────── */
+  .selection-chips {
+    display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .6rem;
+    min-height: 32px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    background: #1A1614; color: #fff;
+    font-size: .75rem; font-weight: 600;
+    padding: .28rem .75rem; border-radius: 999px;
+  }
+  .chip button {
+    background: none; border: none; color: rgba(255,255,255,.6);
+    cursor: pointer; font-size: .8rem; padding: 0; line-height: 1;
+  }
+  .chip button:hover { color: #fff; }
+  .none-label { font-size: .8rem; color: #9A8A7A; font-style: italic; }
+
+  /* ── Step 3 inputs ────────────────────────────────────── */
+  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: .65rem .9rem;
+    border: 1.5px solid #E4DDD5;
+    border-radius: .65rem;
+    font-size: .9rem; color: #1A1614;
+    background: #F7F4F0; outline: none;
+    transition: border-color .18s, background .18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: #C49B3C; background: #fff;
+  }
+  .form-input.error { border-color: #EF4444; }
+  .error-msg { font-size: .75rem; color: #EF4444; margin-top: .3rem; display: none; }
+  .error-msg.show { display: block; }
+  .form-textarea { resize: vertical; min-height: 90px; }
+
+  /* ── Upload zone ─────────────────────────────────────── */
+  .upload-zone {
+    border: 2px dashed #E4DDD5;
+    border-radius: .85rem; padding: 1.25rem;
+    text-align: center; cursor: pointer;
+    transition: all .18s; background: #F7F4F0;
+  }
+  .upload-zone:hover, .upload-zone.drag { border-color: #C49B3C; background: #FEF8E8; }
+  .upload-icon { font-size: 1.75rem; margin-bottom: .4rem; }
+  .upload-zone p { font-size: .82rem; color: #9A8A7A; margin: 0; }
+  .upload-zone strong { color: #5A4E45; }
+  .upload-files { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+  .upload-file {
+    display: flex; align-items: center; gap: .35rem;
+    background: #1A1614; color: #fff;
+    font-size: .72rem; padding: .25rem .65rem; border-radius: 999px;
+  }
+  .upload-file button { background: none; border: none; color: rgba(255,255,255,.6); cursor: pointer; font-size: .8rem; }
+
+  /* ── Navigation buttons ───────────────────────────────── */
+  .step-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 1.75rem; padding-top: 1.25rem;
+    border-top: 1px solid #E4DDD5;
+    gap: 1rem;
+  }
+  .btn-prev {
+    display: flex; align-items: center; gap: .4rem;
+    background: #F7F4F0; border: 1.5px solid #E4DDD5;
+    color: #5A4E45; font-size: .88rem; font-weight: 600;
+    padding: .7rem 1.3rem; border-radius: 999px; cursor: pointer;
+    transition: all .18s;
+  }
+  .btn-prev:hover { border-color: #C49B3C; color: #1A1614; }
+  .btn-next, .btn-submit {
+    display: flex; align-items: center; gap: .5rem;
+    background: #1A1614; color: #fff;
+    font-size: .92rem; font-weight: 700;
+    padding: .75rem 2rem; border-radius: 999px; cursor: pointer;
+    border: none; transition: all .18s;
+    box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  }
+  .btn-next:hover, .btn-submit:hover {
+    background: #C49B3C;
+    box-shadow: 0 6px 20px rgba(196,155,60,.35);
+  }
+  .btn-submit { background: #C49B3C; }
+  .btn-submit:hover { background: #A8842E; }
+
+  /* ── Success state ────────────────────────────────────── */
+  #success-state {
+    display: none; text-align: center; padding: 3rem 1.75rem;
+  }
+  .success-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: #DCFCE7; border: 3px solid #22C55E;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 1.25rem;
+    animation: popIn .45s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .success-ref {
+    display: inline-block;
+    background: #F7F4F0; border: 1px solid #E4DDD5;
+    border-radius: .65rem; padding: .5rem 1.25rem;
+    font-size: .82rem; color: #5A4E45; margin: .75rem 0 1.25rem;
+    font-weight: 600; letter-spacing: .05em;
+  }
+  .success-actions {
+    display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.25rem;
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .quote-card-body { padding: 1.25rem; }
+    .choice-grid { grid-template-columns: 1fr 1fr; }
+    .choice-grid.two-col { grid-template-columns: 1fr; }
+    .calc-inputs { grid-template-columns: 1fr 1fr; }
+    .input-row { grid-template-columns: 1fr; }
+    .mat-grid { grid-template-columns: repeat(2, 1fr); }
+    .progress-track { gap: 0; }
+    .prog-label { display: none; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ════════════════════════════════════════════════ -->
+<div class="top-bar">
+  <div class="container">
+    <div class="top-bar-left">
+      <span class="top-bar-item">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Mon–Fri 9am–6pm &nbsp;·&nbsp; Sat 10am–4pm
+      </span>
+    </div>
+    <div class="top-bar-right">
+      <a class="top-bar-item" href="tel:+16477407403">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .82h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        +1 647-740-7403
+      </a>
+      <a class="wa-btn" href="https://wa.me/16477407403" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HEADER ═════════════════════════════════════════════════ -->
+<header class="site-header" id="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <div class="site-logo">
+        <a href="index.html">
+          <img src="assets/logo.svg" alt="Unique Marble" class="site-logo-img">
+        </a>
+      </div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <div class="nav-item"><a class="nav-link" href="index.html">Home</a></div>
+        <div class="nav-item"><a class="nav-link" href="index.html#products">Porcelain Slabs</a></div>
+        <div class="nav-item"><a class="nav-link" href="index.html#products">Natural Stone</a></div>
+        <div class="nav-item"><a class="nav-link" href="index.html#products">Tiles</a></div>
+        <div class="nav-item"><a class="nav-link" href="index.html#contact">Appointment</a></div>
+        <div class="nav-item"><a class="nav-link active" href="quote.html">Quote</a></div>
+        <div class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></div>
+      </nav>
+      <div class="header-cta">
+        <a href="index.html#contact" class="btn btn-dark">Book Visit</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ HERO ═══════════════════════════════════════════════════ -->
+<section class="quote-hero">
+  <div class="container">
+    <h1>Get a <em>Personalized</em> Quote</h1>
+    <p>Tell us about your project and we'll respond within 24 hours with a detailed estimate.</p>
+
+    <!-- Progress bar -->
+    <div class="progress-track" id="progress-track">
+      <div class="prog-step active" id="prog-1">
+        <div class="prog-num">1</div>
+        <div class="prog-label">Project</div>
+      </div>
+      <div class="prog-step" id="prog-2">
+        <div class="prog-num">2</div>
+        <div class="prog-label">Materials</div>
+      </div>
+      <div class="prog-step" id="prog-3">
+        <div class="prog-num">3</div>
+        <div class="prog-label">Details</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FORM BODY ══════════════════════════════════════════════ -->
+<div class="quote-body">
+  <div class="container">
+    <div class="quote-card" id="quote-card">
+
+      <!-- ══ STEP 1: Project ════════════════════════════════ -->
+      <div class="step-panel active" id="step-1">
+        <div class="quote-card-hdr">
+          <div class="step-icon">🏛️</div>
+          <div>
+            <h2>Your Project</h2>
+            <p>Where is the stone going, and what service do you need?</p>
+          </div>
+        </div>
+        <div class="quote-card-body">
+
+          <!-- Application type -->
+          <div class="field-group">
+            <label class="field-label">Application type <span style="color:#EF4444">*</span></label>
+            <div class="choice-grid" id="app-grid">
+              <div class="choice-card" data-val="countertop">
+                <div class="choice-icon">🍳</div>
+                <div class="choice-label">Countertop</div>
+                <div class="choice-sub">Kitchen or island</div>
+              </div>
+              <div class="choice-card" data-val="bathroom">
+                <div class="choice-icon">🚿</div>
+                <div class="choice-label">Bathroom</div>
+                <div class="choice-sub">Floor, walls, vanity</div>
+              </div>
+              <div class="choice-card" data-val="floor-wall">
+                <div class="choice-icon">🏠</div>
+                <div class="choice-label">Floor / Wall</div>
+                <div class="choice-sub">Living or dining area</div>
+              </div>
+              <div class="choice-card" data-val="fireplace">
+                <div class="choice-icon">🔥</div>
+                <div class="choice-label">Fireplace</div>
+                <div class="choice-sub">Feature surround</div>
+              </div>
+              <div class="choice-card" data-val="outdoor">
+                <div class="choice-icon">🌿</div>
+                <div class="choice-label">Outdoor</div>
+                <div class="choice-sub">Patio or terrace</div>
+              </div>
+              <div class="choice-card" data-val="commercial">
+                <div class="choice-icon">🏢</div>
+                <div class="choice-label">Commercial</div>
+                <div class="choice-sub">Office or retail</div>
+              </div>
+            </div>
+            <p class="error-msg" id="app-error">Please select an application type.</p>
+          </div>
+
+          <!-- Service preference -->
+          <div class="field-group">
+            <label class="field-label">What service are you looking for? <span style="color:#EF4444">*</span></label>
+            <div class="choice-grid two-col" id="svc-grid">
+              <div class="choice-card" data-val="material-only" style="text-align:left;padding:1rem 1.1rem;">
+                <div style="font-size:1.3rem;margin-bottom:.35rem;">📦</div>
+                <div class="choice-label">Material Only</div>
+                <div class="choice-sub" style="margin-top:.3rem;">I have my own installer. Supply the stone only.</div>
+              </div>
+              <div class="choice-card" data-val="full-service" style="text-align:left;padding:1rem 1.1rem;">
+                <div style="font-size:1.3rem;margin-bottom:.35rem;">🔧</div>
+                <div class="choice-label">Full Service</div>
+                <div class="choice-sub" style="margin-top:.3rem;">Include professional fabrication and installation.</div>
+              </div>
+            </div>
+            <p class="error-msg" id="svc-error">Please select a service type.</p>
+          </div>
+
+          <!-- Budget -->
+          <div class="field-group">
+            <label class="field-label">Approximate budget</label>
+            <div class="budget-pills" id="budget-pills">
+              <div class="budget-pill" data-val="under-1k">Under $1,000</div>
+              <div class="budget-pill" data-val="1k-5k">$1k – $5k</div>
+              <div class="budget-pill" data-val="5k-15k">$5k – $15k</div>
+              <div class="budget-pill" data-val="15k-50k">$15k – $50k</div>
+              <div class="budget-pill" data-val="50k-plus">$50k+</div>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <span></span>
+            <button class="btn-next" onclick="goStep(2)">Next: Select Materials →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ STEP 2: Materials ═══════════════════════════════ -->
+      <div class="step-panel" id="step-2">
+        <div class="quote-card-hdr">
+          <div class="step-icon">🪨</div>
+          <div>
+            <h2>Material Selection</h2>
+            <p>Choose one or more materials. You can also enter dimensions for an instant estimate.</p>
+          </div>
+        </div>
+        <div class="quote-card-body">
+
+          <!-- Material category tabs -->
+          <div class="mat-tabs" id="mat-tabs">
+            <button class="mat-tab active" data-panel="slabs">Porcelain Slabs</button>
+            <button class="mat-tab" data-panel="stone">Natural Stone</button>
+            <button class="mat-tab" data-panel="tiles">Tiles</button>
+          </div>
+
+          <!-- Slabs panel -->
+          <div class="mat-panel active mat-grid" id="mat-slabs">
+            <div class="mat-card" data-mat="Panda" data-type="Porcelain Slab">
+              <div class="mat-swatch mat-panda"></div>
+              <div class="mat-info"><div class="mat-name">Panda</div><div class="mat-type">Slab · 5×10</div></div>
+            </div>
+            <div class="mat-card" data-mat="Black Onyx" data-type="Porcelain Slab">
+              <div class="mat-swatch mat-black-onyx"></div>
+              <div class="mat-info"><div class="mat-name">Black Onyx</div><div class="mat-type">Slab · 4×9</div></div>
+            </div>
+            <div class="mat-card" data-mat="Statuario Reale" data-type="Porcelain Slab">
+              <div class="mat-swatch mat-statuario"></div>
+              <div class="mat-info"><div class="mat-name">Statuario Reale</div><div class="mat-type">Slab · 5×10</div></div>
+            </div>
+            <div class="mat-card" data-mat="Calacatta Gold" data-type="Porcelain Slab">
+              <div class="mat-swatch mat-calacatta"></div>
+              <div class="mat-info"><div class="mat-name">Calacatta Gold</div><div class="mat-type">Slab · 4×9</div></div>
+            </div>
+            <div class="mat-card" data-mat="Crystal Ice" data-type="Porcelain Slab">
+              <div class="mat-swatch mat-crystal"></div>
+              <div class="mat-info"><div class="mat-name">Crystal Ice</div><div class="mat-type">Slab · 5×10</div></div>
+            </div>
+            <div class="mat-card" data-mat="Not Sure" data-type="Advise Me">
+              <div class="mat-swatch" style="background:linear-gradient(135deg,#F7F4F0,#E8E2D8);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤔</div>
+              <div class="mat-info"><div class="mat-name">Not Sure</div><div class="mat-type">Advise me</div></div>
+            </div>
+          </div>
+
+          <!-- Stone panel -->
+          <div class="mat-panel mat-grid" id="mat-stone">
+            <div class="mat-card" data-mat="Taj Mahal" data-type="Natural Quartzite">
+              <div class="mat-swatch mat-taj"></div>
+              <div class="mat-info"><div class="mat-name">Taj Mahal</div><div class="mat-type">Quartzite</div></div>
+            </div>
+            <div class="mat-card" data-mat="Bianco Carrara" data-type="Natural Marble">
+              <div class="mat-swatch mat-carrara"></div>
+              <div class="mat-info"><div class="mat-name">Bianco Carrara</div><div class="mat-type">Marble</div></div>
+            </div>
+            <div class="mat-card" data-mat="Nero Marquina" data-type="Natural Marble">
+              <div class="mat-swatch mat-nero"></div>
+              <div class="mat-info"><div class="mat-name">Nero Marquina</div><div class="mat-type">Marble</div></div>
+            </div>
+            <div class="mat-card" data-mat="Translucent Onyx" data-type="Natural Onyx">
+              <div class="mat-swatch mat-onyx"></div>
+              <div class="mat-info"><div class="mat-name">Translucent Onyx</div><div class="mat-type">Backlit Onyx</div></div>
+            </div>
+          </div>
+
+          <!-- Tiles panel -->
+          <div class="mat-panel mat-grid" id="mat-tiles">
+            <div class="mat-card" data-mat="Verde Laminam" data-type="Porcelain Tile 24×48">
+              <div class="mat-swatch mat-verde"></div>
+              <div class="mat-info"><div class="mat-name">Verde Laminam</div><div class="mat-type">Tile · 24×48</div></div>
+            </div>
+            <div class="mat-card" data-mat="Grigio Antique" data-type="Porcelain Tile 24×24">
+              <div class="mat-swatch mat-grigio"></div>
+              <div class="mat-info"><div class="mat-name">Grigio Antique</div><div class="mat-type">Tile · 24×24</div></div>
+            </div>
+            <div class="mat-card" data-mat="Rosso Verona" data-type="Marble Tile">
+              <div class="mat-swatch mat-rosso"></div>
+              <div class="mat-info"><div class="mat-name">Rosso Verona</div><div class="mat-type">Tile · 12×24</div></div>
+            </div>
+            <div class="mat-card" data-mat="Not Sure" data-type="Advise Me">
+              <div class="mat-swatch" style="background:linear-gradient(135deg,#F7F4F0,#E8E2D8);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🤔</div>
+              <div class="mat-info"><div class="mat-name">Not Sure</div><div class="mat-type">Advise me</div></div>
+            </div>
+          </div>
+
+          <!-- Selected chips -->
+          <div style="margin-top:.85rem;">
+            <label class="field-label">Selected materials</label>
+            <div class="selection-chips" id="selected-chips">
+              <span class="none-label">None selected yet</span>
+            </div>
+          </div>
+
+          <!-- Sq-ft calculator -->
+          <div class="calc-box">
+            <h4>📐 Instant Quantity Estimator <span style="font-size:.75rem;font-weight:400;opacity:.6;">(optional — helps us quote accurately)</span></h4>
+            <div class="calc-inputs">
+              <div class="calc-field">
+                <label>Length (ft)</label>
+                <input type="number" id="q-len" min="0" placeholder="e.g. 12" oninput="quoteCalc()">
+              </div>
+              <div class="calc-field">
+                <label>Width (ft)</label>
+                <input type="number" id="q-wid" min="0" placeholder="e.g. 10" oninput="quoteCalc()">
+              </div>
+              <div class="calc-field">
+                <label>Format</label>
+                <select id="q-fmt" onchange="quoteCalc()">
+                  <option value="50">Slab 5×10 (50 sqft)</option>
+                  <option value="36">Slab 4×9 (36 sqft)</option>
+                  <option value="8">Tile 24×48</option>
+                  <option value="4">Tile 24×24</option>
+                  <option value="2">Tile 12×24</option>
+                </select>
+              </div>
+            </div>
+            <div class="calc-result" id="q-result">
+              Enter length and width above to see how much material you'll need →
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button class="btn-prev" onclick="goStep(1)">← Back</button>
+            <button class="btn-next" onclick="goStep(3)">Next: Your Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ STEP 3: Contact details ═════════════════════════ -->
+      <div class="step-panel" id="step-3">
+        <div class="quote-card-hdr">
+          <div class="step-icon">📋</div>
+          <div>
+            <h2>Your Details</h2>
+            <p>Almost done — we'll use this to send your personalized quote.</p>
+          </div>
+        </div>
+        <div class="quote-card-body">
+          <form id="quote-form" novalidate>
+
+            <div class="field-group input-row">
+              <div>
+                <label class="field-label" for="q-name">Full name <span style="color:#EF4444">*</span></label>
+                <input class="form-input" type="text" id="q-name" placeholder="Jane Smith" autocomplete="name" required>
+                <p class="error-msg" id="name-error">Please enter your name.</p>
+              </div>
+              <div>
+                <label class="field-label" for="q-city">Your city</label>
+                <input class="form-input" type="text" id="q-city" placeholder="e.g. North York" autocomplete="address-level2">
+              </div>
+            </div>
+
+            <div class="field-group input-row">
+              <div>
+                <label class="field-label" for="q-email">Email address <span style="color:#EF4444">*</span></label>
+                <input class="form-input" type="email" id="q-email" placeholder="jane@example.com" autocomplete="email" required>
+                <p class="error-msg" id="email-error">Please enter a valid email.</p>
+              </div>
+              <div>
+                <label class="field-label" for="q-phone">Phone number</label>
+                <input class="form-input" type="tel" id="q-phone" placeholder="+1 647 000 0000" autocomplete="tel">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Project timeline</label>
+              <div class="budget-pills" id="timeline-pills">
+                <div class="budget-pill" data-val="asap">ASAP</div>
+                <div class="budget-pill" data-val="1-3mo">1–3 months</div>
+                <div class="budget-pill" data-val="3-6mo">3–6 months</div>
+                <div class="budget-pill" data-val="6mo-plus">6 months+</div>
+                <div class="budget-pill" data-val="planning">Just planning</div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="q-msg">Additional details or special requests</label>
+              <textarea class="form-textarea" id="q-msg" placeholder="e.g. 'Looking to match an existing tile. Have photos to share. Kitchen island approx. 4×8 ft with waterfall edge.'"></textarea>
+            </div>
+
+            <!-- Upload zone -->
+            <div class="field-group">
+              <label class="field-label">Attach floor plans or inspiration photos <span style="color:#9A8A7A;font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+              <div class="upload-zone" id="upload-zone">
+                <div class="upload-icon">📎</div>
+                <p><strong>Click to upload</strong> or drag and drop<br>JPG, PNG, PDF — up to 10 MB each</p>
+                <div class="upload-files" id="upload-files"></div>
+              </div>
+              <input type="file" id="file-input" multiple accept="image/*,.pdf" style="display:none">
+            </div>
+
+            <div class="step-nav">
+              <button type="button" class="btn-prev" onclick="goStep(2)">← Back</button>
+              <button type="button" class="btn-submit" id="submit-btn" onclick="submitQuote()">
+                <span id="submit-text">Submit Quote Request</span>
+                <span id="submit-spinner" style="display:none">⏳</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ══ SUCCESS ════════════════════════════════════════ -->
+      <div id="success-state">
+        <div class="success-icon">✓</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#1A1614;margin-bottom:.5rem;">Quote Request Received!</h2>
+        <p style="color:#5A4E45;max-width:38ch;margin:0 auto .5rem;">Thank you — our team will review your project and send you a detailed estimate within 24 hours.</p>
+        <div class="success-ref" id="success-ref">Ref # UM-0000</div>
+        <p style="font-size:.82rem;color:#9A8A7A;">A confirmation has been sent to your email.</p>
+        <div class="success-actions">
+          <a href="https://wa.me/16477407403" class="btn btn-dark" target="_blank" rel="noopener" style="gap:.4rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp Us
+          </a>
+          <a href="index.html" class="btn btn-outline">Back to Home</a>
+        </div>
+      </div>
+
+    </div><!-- /quote-card -->
+  </div>
+</div>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <a href="index.html" style="display:flex;align-items:center;">
+        <img src="assets/logo.svg" alt="Unique Marble" style="height:40px;width:auto;opacity:.7;">
+      </a>
+      <span style="color:rgba(255,255,255,.35);font-size:.8rem;">© 2026 Unique Marble Ltd. All rights reserved.</span>
+      <a class="hoorak-credit" href="https://hoorak.com" target="_blank" rel="noopener">
+        Powered by
+        <img src="https://negashtdeveloper-dotcom.github.io/temple-of-heal/assets/hoorak-logo.png" alt="Hoorak AI" style="height:14px;opacity:.4;filter:brightness(2);">
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- Hoorak widget -->
+<script src="js/hoorak-widget.js" defer></script>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   QUOTE PAGE CONTROLLER
+════════════════════════════════════════════════════════════ */
+
+/* ── State ──────────────────────────────────────────────── */
+var state = {
+  step: 1,
+  app: null,
+  service: null,
+  budget: null,
+  timeline: null,
+  materials: [],
+  calcResult: '',
+  files: [],
+};
+
+/* ── Step navigation ────────────────────────────────────── */
+function goStep(n) {
+  if (n === 2 && !validateStep1()) return;
+  if (n === 3 && !validateStep2()) return;
+
+  state.step = n;
+
+  // Update panels
+  document.querySelectorAll('.step-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('step-' + n).classList.add('active');
+
+  // Update progress
+  [1,2,3].forEach(function(i){
+    var s = document.getElementById('prog-' + i);
+    s.classList.toggle('active', i === n);
+    s.classList.toggle('done',   i < n);
+  });
+
+  // Scroll to top of card
+  document.getElementById('quote-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── Validation ─────────────────────────────────────────── */
+function validateStep1() {
+  var ok = true;
+  if (!state.app) {
+    document.getElementById('app-error').classList.add('show'); ok = false;
+  } else { document.getElementById('app-error').classList.remove('show'); }
+  if (!state.service) {
+    document.getElementById('svc-error').classList.add('show'); ok = false;
+  } else { document.getElementById('svc-error').classList.remove('show'); }
+  return ok;
+}
+
+function validateStep2() { return true; } // materials optional
+
+function validateStep3() {
+  var ok = true;
+  var name  = document.getElementById('q-name');
+  var email = document.getElementById('q-email');
+  if (!name.value.trim()) {
+    name.classList.add('error');
+    document.getElementById('name-error').classList.add('show');
+    ok = false;
+  } else {
+    name.classList.remove('error');
+    document.getElementById('name-error').classList.remove('show');
+  }
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email.value.trim())) {
+    email.classList.add('error');
+    document.getElementById('email-error').classList.add('show');
+    ok = false;
+  } else {
+    email.classList.remove('error');
+    document.getElementById('email-error').classList.remove('show');
+  }
+  return ok;
+}
+
+/* ── Choice cards (single-select) ─────────────────────── */
+function initChoiceGrid(gridId, stateKey, errorId) {
+  var grid = document.getElementById(gridId);
+  if (!grid) return;
+  grid.querySelectorAll('.choice-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      grid.querySelectorAll('.choice-card').forEach(function(c){ c.classList.remove('selected'); });
+      card.classList.add('selected');
+      state[stateKey] = card.dataset.val;
+      if (errorId) document.getElementById(errorId).classList.remove('show');
+    });
+  });
+}
+
+/* ── Budget / timeline pills ────────────────────────────── */
+function initPills(containerId, stateKey) {
+  var wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  wrap.querySelectorAll('.budget-pill').forEach(function(pill){
+    pill.addEventListener('click', function(){
+      wrap.querySelectorAll('.budget-pill').forEach(function(p){ p.classList.remove('selected'); });
+      pill.classList.add('selected');
+      state[stateKey] = pill.dataset.val;
+    });
+  });
+}
+
+/* ── Material tabs ──────────────────────────────────────── */
+function initMatTabs() {
+  var tabs = document.querySelectorAll('.mat-tab');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.mat-panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById('mat-' + tab.dataset.panel).classList.add('active');
+    });
+  });
+}
+
+/* ── Material cards (multi-select) ─────────────────────── */
+function initMatCards() {
+  document.querySelectorAll('.mat-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var mat  = card.dataset.mat;
+      var type = card.dataset.type;
+      var idx  = state.materials.findIndex(function(m){ return m.name === mat; });
+      if (idx === -1) {
+        state.materials.push({ name: mat, type: type });
+        card.classList.add('selected');
+      } else {
+        state.materials.splice(idx, 1);
+        card.classList.remove('selected');
+      }
+      renderChips();
+    });
+  });
+}
+
+function renderChips() {
+  var wrap = document.getElementById('selected-chips');
+  wrap.innerHTML = '';
+  if (!state.materials.length) {
+    wrap.innerHTML = '<span class="none-label">None selected yet</span>';
+    return;
+  }
+  state.materials.forEach(function(m){
+    var chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.innerHTML = m.name + ' <button onclick="removeChip(\'' + m.name + '\')" aria-label="Remove">×</button>';
+    wrap.appendChild(chip);
+  });
+}
+
+function removeChip(name) {
+  state.materials = state.materials.filter(function(m){ return m.name !== name; });
+  document.querySelectorAll('.mat-card').forEach(function(c){
+    if (c.dataset.mat === name) c.classList.remove('selected');
+  });
+  renderChips();
+}
+
+/* ── Calculator ─────────────────────────────────────────── */
+function quoteCalc() {
+  var l = parseFloat(document.getElementById('q-len').value) || 0;
+  var w = parseFloat(document.getElementById('q-wid').value) || 0;
+  var u = parseInt(document.getElementById('q-fmt').value, 10);
+  if (!l || !w) {
+    document.getElementById('q-result').innerHTML = 'Enter length and width above to see how much material you\'ll need →';
+    state.calcResult = '';
+    return;
+  }
+  var sqft = l * w;
+  var withWaste = Math.ceil(sqft * 1.12);
+  var units = Math.ceil(withWaste / u);
+  var word  = u >= 36 ? 'slabs' : 'tiles';
+  var txt   = sqft + ' sq ft → ' + withWaste + ' sq ft with waste → ' + units + ' ' + word;
+  state.calcResult = txt;
+  document.getElementById('q-result').innerHTML =
+    '<strong>' + sqft + ' sq ft</strong> area &nbsp;→&nbsp; ' +
+    '<strong>' + withWaste + ' sq ft</strong> with 12% waste &nbsp;→&nbsp; ' +
+    '<strong>' + units + ' ' + word + '</strong> needed';
+}
+
+/* ── File upload ─────────────────────────────────────────── */
+function initUpload() {
+  var zone  = document.getElementById('upload-zone');
+  var input = document.getElementById('file-input');
+  var list  = document.getElementById('upload-files');
+
+  zone.addEventListener('click', function(){ input.click(); });
+  input.addEventListener('change', function(){
+    addFiles(Array.from(input.files));
+    input.value = '';
+  });
+  zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('drag'); });
+  zone.addEventListener('dragleave', function(){ zone.classList.remove('drag'); });
+  zone.addEventListener('drop', function(e){
+    e.preventDefault(); zone.classList.remove('drag');
+    addFiles(Array.from(e.dataTransfer.files));
+  });
+
+  function addFiles(files) {
+    files.forEach(function(f){
+      if (f.size > 10 * 1024 * 1024) return; // 10 MB limit
+      state.files.push(f);
+      var el = document.createElement('span');
+      el.className = 'upload-file';
+      el.innerHTML = '📄 ' + f.name + ' <button onclick="removeFile(\'' + f.name + '\')" aria-label="Remove">×</button>';
+      list.appendChild(el);
+    });
+  }
+}
+
+function removeFile(name) {
+  state.files = state.files.filter(function(f){ return f.name !== name; });
+  var items = document.querySelectorAll('.upload-file');
+  items.forEach(function(el){
+    if (el.textContent.indexOf(name) !== -1) el.remove();
+  });
+}
+
+/* ── Submit ─────────────────────────────────────────────── */
+function submitQuote() {
+  if (!validateStep3()) return;
+
+  var btn  = document.getElementById('submit-btn');
+  var txt  = document.getElementById('submit-text');
+  var spin = document.getElementById('submit-spinner');
+
+  btn.disabled = true;
+  txt.textContent = 'Submitting…';
+  spin.style.display = 'inline';
+
+  // Simulate API call
+  setTimeout(function() {
+    var ref = 'UM-' + Math.random().toString(36).substr(2,5).toUpperCase();
+    document.getElementById('success-ref').textContent = 'Ref # ' + ref;
+
+    // Hide form steps, show success
+    document.querySelectorAll('.step-panel').forEach(function(p){ p.style.display = 'none'; });
+    document.getElementById('quote-card').querySelector('.quote-card-hdr') &&
+      (document.getElementById('quote-card').querySelector('.quote-card-hdr').style.display = 'none');
+    document.getElementById('success-state').style.display = 'block';
+
+    // Update progress to all done
+    [1,2,3].forEach(function(i){
+      var s = document.getElementById('prog-' + i);
+      s.classList.remove('active');
+      s.classList.add('done');
+    });
+    document.getElementById('quote-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 1600);
+}
+
+/* ── Header scroll ──────────────────────────────────────── */
+(function(){
+  var h = document.getElementById('site-header');
+  window.addEventListener('scroll', function(){ h.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
+})();
+
+/* ── Mobile nav ─────────────────────────────────────────── */
+(function(){
+  var btn = document.getElementById('hamburger');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    btn.setAttribute('aria-expanded', btn.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+  });
+})();
+
+/* ── Init ───────────────────────────────────────────────── */
+initChoiceGrid('app-grid', 'app', 'app-error');
+initChoiceGrid('svc-grid', 'service', 'svc-error');
+initPills('budget-pills', 'budget');
+initPills('timeline-pills', 'timeline');
+initMatTabs();
+initMatCards();
+initUpload();
+
+// Pre-select material if passed in URL
+(function(){
+  var params = new URLSearchParams(location.search);
+  var mat = params.get('material');
+  if (mat) {
+    document.querySelectorAll('.mat-card').forEach(function(card){
+      if (card.dataset.mat === mat) card.click();
+    });
+    goStep(2);
+  }
+})();
+</script>
+
+</body>
+</html>
