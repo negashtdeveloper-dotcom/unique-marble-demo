@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Appointment — Unique Marble | Vaughan, ON</title>
+  <meta name="description" content="Book a free showroom visit or virtual consultation with our stone experts. See availability and confirm your appointment instantly.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+  /* ══════════════════════════════════════════════════════
+     APPOINTMENT PAGE STYLES
+  ══════════════════════════════════════════════════════ */
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .appt-hero {
+    background: linear-gradient(160deg,#1A1614 0%,#2E2825 100%);
+    padding: 2.75rem 0 2.25rem; text-align: center;
+  }
+  .appt-hero h1 { font-size: clamp(1.8rem,4vw,2.75rem); color:#fff; margin-bottom:.5rem; }
+  .appt-hero h1 em { color:#C49B3C; font-style:normal; }
+  .appt-hero p  { color:rgba(255,255,255,.55); font-size:.95rem; max-width:42ch; margin:0 auto; }
+
+  /* ── Progress stepper ────────────────────────────── */
+  .stepper {
+    display:flex; align-items:center; justify-content:center;
+    gap:0; max-width:500px; margin:2rem auto 0;
+  }
+  .stp { display:flex; flex-direction:column; align-items:center; gap:.3rem; flex:1; position:relative; }
+  .stp::after {
+    content:''; position:absolute; top:15px; left:50%; width:100%;
+    height:2px; background:rgba(255,255,255,.12); z-index:0;
+  }
+  .stp:last-child::after { display:none; }
+  .stp.done::after { background:#C49B3C; }
+  .stp-n {
+    width:32px; height:32px; border-radius:50%; border:2px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.06); color:rgba(255,255,255,.45);
+    font-size:.8rem; font-weight:700; display:flex; align-items:center;
+    justify-content:center; z-index:1; transition:all .3s;
+  }
+  .stp.active .stp-n { background:#C49B3C; border-color:#C49B3C; color:#1A1614; }
+  .stp.done   .stp-n { background:#C49B3C; border-color:#C49B3C; color:#1A1614; }
+  .stp-l { font-size:.65rem; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.35); white-space:nowrap; }
+  .stp.active .stp-l, .stp.done .stp-l { color:#C49B3C; }
+
+  /* ── Layout ──────────────────────────────────────── */
+  .appt-body { background:#F7F4F0; padding:2.5rem 0 4rem; }
+  .appt-grid {
+    display:grid; grid-template-columns:1fr 360px;
+    gap:1.5rem; align-items:start;
+  }
+
+  /* ── Card shell ──────────────────────────────────── */
+  .appt-card {
+    background:#fff; border-radius:1.25rem;
+    box-shadow:0 4px 30px rgba(0,0,0,.07);
+    overflow:hidden;
+  }
+  .card-hdr {
+    background:linear-gradient(135deg,#1A1614,#2E2825);
+    padding:1.1rem 1.4rem;
+    display:flex; align-items:center; gap:.7rem;
+  }
+  .card-hdr-icon {
+    width:40px; height:40px; border-radius:.6rem;
+    background:rgba(196,155,60,.15); border:1px solid rgba(196,155,60,.3);
+    display:flex; align-items:center; justify-content:center; font-size:1.2rem;
+    flex-shrink:0;
+  }
+  .card-hdr h2 { font-size:1.05rem; color:#fff; font-family:'Playfair Display',serif; }
+  .card-hdr p  { font-size:.75rem; color:rgba(255,255,255,.5); margin-top:.1rem; }
+  .card-body { padding:1.5rem; }
+
+  /* ── Appointment type cards ──────────────────────── */
+  .type-grid { display:grid; grid-template-columns:1fr 1fr; gap:.65rem; }
+  .type-card {
+    border:2px solid #E4DDD5; border-radius:.9rem; padding:.9rem 1rem;
+    cursor:pointer; transition:all .18s; background:#F7F4F0;
+  }
+  .type-card:hover { border-color:#C49B3C; background:#FEF8E8; transform:translateY(-1px); }
+  .type-card.sel { border-color:#C49B3C; background:#FEF8E8; box-shadow:0 0 0 3px rgba(196,155,60,.15); }
+  .type-icon { font-size:1.5rem; margin-bottom:.4rem; }
+  .type-name { font-size:.85rem; font-weight:700; color:#1A1614; }
+  .type-dur  { font-size:.72rem; color:#C49B3C; font-weight:600; margin:.1rem 0; }
+  .type-desc { font-size:.72rem; color:#9A8A7A; line-height:1.4; margin-top:.2rem; }
+
+  /* ── Calendar ────────────────────────────────────── */
+  .cal-nav {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:1rem;
+  }
+  .cal-nav h3 { font-size:1rem; font-weight:700; color:#1A1614; }
+  .cal-arrow {
+    width:32px; height:32px; border-radius:50%; border:1.5px solid #E4DDD5;
+    background:#F7F4F0; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:.85rem; color:#5A4E45; transition:all .18s;
+  }
+  .cal-arrow:hover { border-color:#C49B3C; color:#C49B3C; background:#FEF8E8; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:.3rem; }
+  .cal-dow  { text-align:center; font-size:.68rem; font-weight:700; color:#9A8A7A; text-transform:uppercase; padding-bottom:.4rem; }
+  .cal-day {
+    aspect-ratio:1; border-radius:.55rem; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; font-size:.82rem; font-weight:600;
+    cursor:pointer; transition:all .18s; position:relative; color:#1A1614;
+    border:1.5px solid transparent;
+  }
+  .cal-day:hover:not(.cal-empty):not(.cal-past):not(.cal-closed):not(.cal-full) {
+    background:#FEF8E8; border-color:#C49B3C;
+  }
+  .cal-day.cal-today { border-color:#C49B3C; color:#C49B3C; }
+  .cal-day.cal-sel { background:#1A1614; color:#fff; border-color:#1A1614; }
+  .cal-day.cal-sel .cal-dot { background:#C49B3C; }
+  .cal-day.cal-past { color:#C8C0B8; cursor:default; }
+  .cal-day.cal-closed { color:#C8C0B8; cursor:default; font-size:.65rem; }
+  .cal-day.cal-full { color:#D1C4B8; cursor:default; }
+  .cal-day.cal-full .cal-dot { background:#EF4444; }
+  .cal-day.cal-empty { cursor:default; }
+  .cal-dot {
+    width:5px; height:5px; border-radius:50%; background:#22C55E;
+    margin-top:2px; display:none;
+  }
+  .cal-day.has-dot .cal-dot { display:block; }
+  .cal-legend {
+    display:flex; align-items:center; gap:1rem; margin-top:1rem;
+    flex-wrap:wrap; font-size:.72rem; color:#9A8A7A;
+  }
+  .cal-legend-item { display:flex; align-items:center; gap:.35rem; }
+  .cal-dot-green { width:8px; height:8px; border-radius:50%; background:#22C55E; }
+  .cal-dot-red   { width:8px; height:8px; border-radius:50%; background:#EF4444; }
+  .cal-dot-grey  { width:8px; height:8px; border-radius:50%; background:#D1C4B8; }
+
+  /* ── Time slots ──────────────────────────────────── */
+  .slots-hdr {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:.85rem;
+  }
+  .slots-hdr h4 { font-size:.88rem; font-weight:700; color:#1A1614; }
+  .slots-hdr span { font-size:.75rem; color:#C49B3C; font-weight:600; }
+  .slots-cols { display:grid; grid-template-columns:1fr 1fr; gap:.4rem; }
+  .slot-group-label {
+    font-size:.68rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:.08em; color:#9A8A7A; margin:.5rem 0 .35rem;
+    grid-column:span 2;
+  }
+  .slot-btn {
+    padding:.45rem .5rem; border-radius:.6rem; font-size:.8rem; font-weight:600;
+    border:1.5px solid #E4DDD5; background:#F7F4F0; color:#1A1614;
+    cursor:pointer; transition:all .18s; text-align:center;
+  }
+  .slot-btn:hover:not(.slot-booked) { border-color:#C49B3C; background:#FEF8E8; }
+  .slot-btn.slot-sel { background:#1A1614; color:#fff; border-color:#1A1614; }
+  .slot-btn.slot-booked {
+    background:#F0EDE8; color:#C8B8A8; cursor:not-allowed;
+    text-decoration:line-through; border-color:#E4DDD5;
+  }
+  .no-slots {
+    text-align:center; padding:1.25rem;
+    font-size:.85rem; color:#9A8A7A; font-style:italic;
+  }
+
+  /* ── Right panel: summary + form ────────────────── */
+  .summary-box {
+    border:1.5px solid #E4DDD5; border-radius:.85rem;
+    background:#F7F4F0; padding:1.1rem; margin-bottom:1.25rem;
+  }
+  .summary-box h4 { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#9A8A7A; margin-bottom:.75rem; }
+  .summary-row {
+    display:flex; align-items:flex-start; gap:.6rem;
+    font-size:.84rem; color:#1A1614; margin-bottom:.5rem;
+  }
+  .summary-row:last-child { margin-bottom:0; }
+  .summary-icon { font-size:1rem; flex-shrink:0; width:20px; text-align:center; }
+  .summary-val { font-weight:600; }
+  .summary-val.empty { color:#C8B8A8; font-weight:400; font-style:italic; }
+
+  /* Form inputs */
+  .fl { display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#5A4E45; margin-bottom:.35rem; }
+  .fg { margin-bottom:1rem; }
+  .fi, .ft {
+    width:100%; padding:.6rem .85rem;
+    border:1.5px solid #E4DDD5; border-radius:.65rem;
+    font-size:.875rem; color:#1A1614; background:#F7F4F0;
+    outline:none; transition:border-color .18s, background .18s;
+    font-family:'DM Sans',sans-serif;
+  }
+  .fi:focus, .ft:focus { border-color:#C49B3C; background:#fff; }
+  .fi.err { border-color:#EF4444; }
+  .err-msg { font-size:.72rem; color:#EF4444; margin-top:.25rem; display:none; }
+  .err-msg.show { display:block; }
+  .ft { resize:vertical; min-height:80px; }
+  .fi-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+  .consent-row { display:flex; align-items:flex-start; gap:.55rem; margin-top:.5rem; }
+  .consent-row input { margin-top:.2rem; accent-color:#C49B3C; }
+  .consent-row label { font-size:.75rem; color:#7A6A5A; line-height:1.5; }
+
+  /* Submit */
+  .btn-book {
+    width:100%; padding:.8rem; border-radius:999px;
+    background:linear-gradient(135deg,#C49B3C,#A8842E);
+    color:#fff; border:none; font-size:.95rem; font-weight:700;
+    cursor:pointer; transition:all .2s;
+    box-shadow:0 4px 16px rgba(196,155,60,.35);
+    display:flex; align-items:center; justify-content:center; gap:.5rem;
+    margin-top:1.25rem;
+  }
+  .btn-book:hover { background:linear-gradient(135deg,#D4AB4C,#C49B3C); transform:translateY(-1px); box-shadow:0 6px 22px rgba(196,155,60,.45); }
+  .btn-book:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+  /* ── Success state ───────────────────────────────── */
+  #appt-success { display:none; text-align:center; padding:2.5rem 1.5rem; }
+  .success-ring {
+    width:80px; height:80px; border-radius:50%;
+    background:#DCFCE7; border:3px solid #22C55E;
+    display:flex; align-items:center; justify-content:center;
+    font-size:2.25rem; margin:0 auto 1.25rem;
+    animation:popIn .5s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  .conf-card {
+    background:#F7F4F0; border:1px solid #E4DDD5;
+    border-radius:1rem; padding:1.25rem; text-align:left;
+    margin:1.25rem 0;
+  }
+  .conf-row { display:flex; gap:.6rem; font-size:.85rem; color:#5A4E45; padding:.4rem 0; }
+  .conf-row:not(:last-child) { border-bottom:1px solid #E4DDD5; }
+  .conf-key { font-weight:700; color:#1A1614; min-width:80px; }
+
+  /* ── Info sidebar ────────────────────────────────── */
+  .info-card { background:#fff; border-radius:1.25rem; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.06); }
+  .info-item { display:flex; gap:.85rem; padding:1rem 1.25rem; align-items:flex-start; }
+  .info-item + .info-item { border-top:1px solid #F0EAE0; }
+  .info-icon {
+    width:38px; height:38px; border-radius:.6rem;
+    background:#F7F4F0; display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; flex-shrink:0;
+  }
+  .info-title { font-size:.82rem; font-weight:700; color:#1A1614; margin-bottom:.25rem; }
+  .info-body  { font-size:.78rem; color:#7A6A5A; line-height:1.6; }
+
+  /* ── Responsive ──────────────────────────────────── */
+  @media(max-width:860px) {
+    .appt-grid { grid-template-columns:1fr; }
+    .type-grid { grid-template-columns:repeat(2,1fr); }
+    .fi-row { grid-template-columns:1fr; }
+    .stp-l { display:none; }
+  }
+  @media(max-width:520px) {
+    .type-grid { grid-template-columns:1fr 1fr; }
+    .slots-cols { grid-template-columns:repeat(3,1fr); }
+    .slot-group-label { grid-column:span 3; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ════════════════════════════════════════════════ -->
+<div class="top-bar">
+  <div class="container">
+    <div class="top-bar-left">
+      <span class="top-bar-item">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Mon–Fri 9am–6pm &nbsp;·&nbsp; Sat 10am–4pm
+      </span>
+    </div>
+    <div class="top-bar-right">
+      <a class="top-bar-item" href="tel:+16477407403">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 .82h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        +1 647-740-7403
+      </a>
+      <a class="wa-btn" href="https://wa.me/16477407403" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HEADER ═════════════════════════════════════════════════ -->
+<header class="site-header" id="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <div class="site-logo">
+        <a href="index.html">
+          <img src="assets/logo.svg" alt="Unique Marble" class="site-logo-img">
+        </a>
+      </div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <div class="nav-item"><a class="nav-link" href="index.html">Home</a></div>
+        <div class="nav-item"><a class="nav-link" href="index.html#products">Products</a></div>
+        <div class="nav-item"><a class="nav-link active" href="appointment.html">Appointment</a></div>
+        <div class="nav-item"><a class="nav-link" href="quote.html">Quote</a></div>
+        <div class="nav-item"><a class="nav-link" href="index.html#about">About Us</a></div>
+      </nav>
+      <div class="header-cta">
+        <a href="quote.html" class="btn btn-dark">Get a Quote</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ HERO ═══════════════════════════════════════════════════ -->
+<section class="appt-hero">
+  <div class="container">
+    <h1>Schedule <em>Your</em> Appointment</h1>
+    <p>Choose a time that works for you — confirmation is instant and free to cancel.</p>
+    <div class="stepper" id="stepper">
+      <div class="stp active" id="stp-1"><div class="stp-n">1</div><div class="stp-l">Type</div></div>
+      <div class="stp" id="stp-2"><div class="stp-n">2</div><div class="stp-l">Date &amp; Time</div></div>
+      <div class="stp" id="stp-3"><div class="stp-n">3</div><div class="stp-l">Confirm</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BODY ═══════════════════════════════════════════════════ -->
+<div class="appt-body">
+  <div class="container">
+    <div class="appt-grid">
+
+      <!-- ══ LEFT: Type → Calendar → Slots ════════════════ -->
+      <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+        <!-- Step 1: Appointment type -->
+        <div class="appt-card" id="card-type">
+          <div class="card-hdr">
+            <div class="card-hdr-icon">🏛️</div>
+            <div>
+              <h2>Choose Appointment Type</h2>
+              <p>Select what you'd like to discuss</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="type-grid">
+              <div class="type-card sel" data-type="Showroom Visit" data-dur="60 min" onclick="pickType(this)">
+                <div class="type-icon">🏛️</div>
+                <div class="type-name">Showroom Visit</div>
+                <div class="type-dur">60 min</div>
+                <div class="type-desc">Browse our full collection in person with expert guidance</div>
+              </div>
+              <div class="type-card" data-type="Virtual Consultation" data-dur="30 min" onclick="pickType(this)">
+                <div class="type-icon">💻</div>
+                <div class="type-name">Virtual Consultation</div>
+                <div class="type-dur">30 min</div>
+                <div class="type-desc">Video call with a design expert — no commute required</div>
+              </div>
+              <div class="type-card" data-type="Quote Review" data-dur="45 min" onclick="pickType(this)">
+                <div class="type-icon">📐</div>
+                <div class="type-name">Quote Review</div>
+                <div class="type-dur">45 min</div>
+                <div class="type-desc">Walk through your project estimate and finalise materials</div>
+              </div>
+              <div class="type-card" data-type="Design Session" data-dur="90 min" onclick="pickType(this)">
+                <div class="type-icon">🎨</div>
+                <div class="type-name">Design Session</div>
+                <div class="type-dur">90 min</div>
+                <div class="type-desc">Full consultation with material selection and layout planning</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Calendar -->
+        <div class="appt-card" id="card-cal">
+          <div class="card-hdr">
+            <div class="card-hdr-icon">📅</div>
+            <div>
+              <h2>Pick a Date</h2>
+              <p id="cal-subtitle">Select an available day below</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Calendar nav -->
+            <div class="cal-nav">
+              <button class="cal-arrow" id="cal-prev" onclick="changeMonth(-1)">&#8592;</button>
+              <h3 id="cal-title">June 2026</h3>
+              <button class="cal-arrow" id="cal-next" onclick="changeMonth(1)">&#8594;</button>
+            </div>
+            <!-- Day-of-week headers -->
+            <div class="cal-grid" id="cal-dow">
+              <div class="cal-dow">Sun</div>
+              <div class="cal-dow">Mon</div>
+              <div class="cal-dow">Tue</div>
+              <div class="cal-dow">Wed</div>
+              <div class="cal-dow">Thu</div>
+              <div class="cal-dow">Fri</div>
+              <div class="cal-dow">Sat</div>
+            </div>
+            <div class="cal-grid" id="cal-days"></div>
+            <div class="cal-legend">
+              <div class="cal-legend-item"><div class="cal-dot-green"></div> Available</div>
+              <div class="cal-legend-item"><div class="cal-dot-red"></div> Fully booked</div>
+              <div class="cal-legend-item"><div class="cal-dot-grey"></div> Closed / past</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2b: Time slots (shown after date picked) -->
+        <div class="appt-card" id="card-slots" style="display:none;">
+          <div class="card-hdr">
+            <div class="card-hdr-icon">🕐</div>
+            <div>
+              <h2>Pick a Time</h2>
+              <p id="slots-subtitle">Eastern Time (ET)</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="slots-grid"></div>
+          </div>
+        </div>
+
+      </div><!-- /left -->
+
+      <!-- ══ RIGHT: Summary + Form ═══════════════════════ -->
+      <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+        <!-- Booking summary -->
+        <div class="appt-card">
+          <div class="card-hdr">
+            <div class="card-hdr-icon">📋</div>
+            <div><h2>Your Booking</h2><p>Review before confirming</p></div>
+          </div>
+          <div class="card-body">
+            <div class="summary-box">
+              <h4>Appointment Summary</h4>
+              <div class="summary-row">
+                <span class="summary-icon">🏛️</span>
+                <div><div style="font-size:.72rem;color:#9A8A7A;">Type</div><div class="summary-val" id="sum-type">Showroom Visit · 60 min</div></div>
+              </div>
+              <div class="summary-row">
+                <span class="summary-icon">📅</span>
+                <div><div style="font-size:.72rem;color:#9A8A7A;">Date</div><div class="summary-val empty" id="sum-date">Not selected yet</div></div>
+              </div>
+              <div class="summary-row">
+                <span class="summary-icon">🕐</span>
+                <div><div style="font-size:.72rem;color:#9A8A7A;">Time</div><div class="summary-val empty" id="sum-time">Not selected yet</div></div>
+              </div>
+              <div class="summary-row">
+                <span class="summary-icon">📍</span>
+                <div><div style="font-size:.72rem;color:#9A8A7A;">Location</div><div class="summary-val" id="sum-loc">Unit 208, 7250 Keele St, Vaughan</div></div>
+              </div>
+            </div>
+
+            <!-- Contact form -->
+            <form id="appt-form" novalidate>
+              <div class="fi-row">
+                <div class="fg">
+                  <label class="fl" for="a-fname">First name *</label>
+                  <input class="fi" type="text" id="a-fname" placeholder="Jane" required autocomplete="given-name">
+                  <p class="err-msg" id="fname-err">Required</p>
+                </div>
+                <div class="fg">
+                  <label class="fl" for="a-lname">Last name *</label>
+                  <input class="fi" type="text" id="a-lname" placeholder="Smith" required autocomplete="family-name">
+                  <p class="err-msg" id="lname-err">Required</p>
+                </div>
+              </div>
+              <div class="fg">
+                <label class="fl" for="a-email">Email address *</label>
+                <input class="fi" type="email" id="a-email" placeholder="jane@example.com" required autocomplete="email">
+                <p class="err-msg" id="email-err">Enter a valid email</p>
+              </div>
+              <div class="fg">
+                <label class="fl" for="a-phone">Phone number</label>
+                <input class="fi" type="tel" id="a-phone" placeholder="+1 647 000 0000" autocomplete="tel">
+              </div>
+              <div class="fg">
+                <label class="fl" for="a-note">What's your project about? <span style="color:#9A8A7A;font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+                <textarea class="ft" id="a-note" placeholder="e.g. Kitchen countertop, about 40 sq ft. Interested in white porcelain slabs."></textarea>
+              </div>
+              <div class="consent-row">
+                <input type="checkbox" id="a-consent" checked>
+                <label for="a-consent">I agree to receive a confirmation email and reminder for my appointment. No spam, ever.</label>
+              </div>
+              <button type="button" class="btn-book" id="book-btn" onclick="bookAppt()">
+                <span id="book-text">Confirm Appointment</span>
+                <span id="book-spin" style="display:none">⏳</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Info sidebar -->
+        <div class="info-card">
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div>
+              <div class="info-title">Showroom Address</div>
+              <div class="info-body">Unit 208 – 7250 Keele St<br>Vaughan, Ontario L4K 1Z8<br><a href="https://maps.google.com" target="_blank" style="color:#C49B3C;font-weight:600;">Get directions →</a></div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🕐</div>
+            <div>
+              <div class="info-title">Hours</div>
+              <div class="info-body">Mon – Fri: 9:00 AM – 6:00 PM<br>Saturday: 10:00 AM – 4:00 PM<br>Sunday: Closed</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📋</div>
+            <div>
+              <div class="info-title">What to Bring</div>
+              <div class="info-body">Room dimensions · Inspiration photos · Existing samples (if matching) · Project budget range</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">✓</div>
+            <div>
+              <div class="info-title">Free Cancellation</div>
+              <div class="info-body">Cancel or reschedule anytime — no fees, no questions asked.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /right -->
+    </div><!-- /grid -->
+
+    <!-- ══ SUCCESS STATE ══════════════════════════════ -->
+    <div id="appt-success" style="max-width:520px;margin:0 auto;">
+      <div class="appt-card">
+        <div class="card-body" style="text-align:center;padding:2.5rem;">
+          <div class="success-ring">✓</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.7rem;color:#1A1614;margin-bottom:.5rem;">Appointment Confirmed!</h2>
+          <p style="color:#5A4E45;margin-bottom:1.25rem;">A confirmation has been sent to your email with all the details below.</p>
+          <div class="conf-card" id="conf-card"></div>
+          <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;">
+            <a href="#" id="cal-link" class="btn btn-dark" style="gap:.4rem;font-size:.85rem;">📅 Add to Calendar</a>
+            <a href="https://wa.me/16477407403" class="btn btn-outline" target="_blank" style="font-size:.85rem;">WhatsApp Us</a>
+          </div>
+          <a href="index.html" style="display:block;margin-top:1rem;font-size:.8rem;color:#9A8A7A;text-decoration:underline;">Back to home</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</div><!-- /appt-body -->
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;padding-top:0;">
+      <a href="index.html"><img src="assets/logo.svg" alt="Unique Marble" style="height:40px;opacity:.65;"></a>
+      <span style="color:rgba(255,255,255,.35);font-size:.8rem;">© 2026 Unique Marble Ltd.</span>
+      <a class="hoorak-credit" href="https://hoorak.com" target="_blank" rel="noopener">
+        Powered by <img src="https://negashtdeveloper-dotcom.github.io/temple-of-heal/assets/hoorak-logo.png" alt="Hoorak" style="height:14px;opacity:.4;filter:brightness(2);">
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/hoorak-widget.js" defer></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   MOCK DATA
+══════════════════════════════════════════════════════════════ */
+var WEEKDAY_SLOTS = ['9:00 AM','10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'];
+var SATURDAY_SLOTS = ['10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM'];
+
+/* Dates with some slots already booked (format: YYYY-MM-DD) */
+var BOOKED = {
+  '2026-06-09': ['9:00 AM','10:00 AM','2:00 PM'],
+  '2026-06-10': ['11:00 AM','3:00 PM','4:00 PM'],
+  '2026-06-11': ['9:00 AM','1:00 PM','5:00 PM'],
+  '2026-06-12': ['9:00 AM','10:00 AM','11:00 AM','2:00 PM','4:00 PM'],
+  '2026-06-13': ['10:00 AM','2:00 PM'],
+  '2026-06-16': ['9:00 AM','11:00 AM','2:00 PM','3:00 PM'],
+  '2026-06-17': ['10:00 AM','1:00 PM','4:00 PM'],
+  '2026-06-18': ['9:00 AM','2:00 PM','3:00 PM','5:00 PM'],
+  '2026-06-19': ['9:00 AM','10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'],
+  '2026-06-20': ['9:00 AM','10:00 AM','4:00 PM','5:00 PM'],
+  '2026-06-23': ['9:00 AM','10:00 AM','2:00 PM'],
+  '2026-06-24': ['11:00 AM','3:00 PM'],
+  '2026-06-25': ['9:00 AM','10:00 AM','11:00 AM','1:00 PM'],
+  '2026-06-26': ['2:00 PM','3:00 PM','4:00 PM'],
+  '2026-06-27': ['10:00 AM','11:00 AM'],
+  '2026-07-02': ['9:00 AM','11:00 AM','3:00 PM'],
+  '2026-07-03': ['10:00 AM','2:00 PM','4:00 PM'],
+  '2026-07-07': ['9:00 AM','10:00 AM','1:00 PM'],
+  '2026-07-08': ['11:00 AM','3:00 PM','5:00 PM'],
+  '2026-07-09': ['9:00 AM','10:00 AM','11:00 AM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'],
+  '2026-07-10': ['9:00 AM','2:00 PM'],
+};
+
+/* ── State ─────────────────────────────────────────────────── */
+var S = {
+  type: 'Showroom Visit', dur: '60 min',
+  date: null, dateLabel: null, time: null,
+  year: 2026, month: 5,  /* 0-indexed: 5 = June */
+};
+
+var TODAY = new Date(2026,5,8); /* mock today: June 8 2026 */
+
+/* ── Appointment type ──────────────────────────────────────── */
+function pickType(card) {
+  document.querySelectorAll('.type-card').forEach(function(c){ c.classList.remove('sel'); });
+  card.classList.add('sel');
+  S.type = card.dataset.type;
+  S.dur  = card.dataset.dur;
+  updateSummary();
+  updateStepper(1);
+  /* Update virtual location */
+  document.getElementById('sum-loc').textContent =
+    S.type === 'Virtual Consultation'
+      ? 'Video call — link sent to your email'
+      : 'Unit 208, 7250 Keele St, Vaughan';
+}
+
+/* ── Calendar ──────────────────────────────────────────────── */
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function changeMonth(dir) {
+  S.month += dir;
+  if (S.month > 11) { S.month = 0; S.year++; }
+  if (S.month < 0)  { S.month = 11; S.year--; }
+  renderCal();
+}
+
+function renderCal() {
+  document.getElementById('cal-title').textContent = MONTHS[S.month] + ' ' + S.year;
+  document.getElementById('cal-prev').disabled = (S.year === TODAY.getFullYear() && S.month <= TODAY.getMonth());
+
+  var first = new Date(S.year, S.month, 1).getDay(); /* 0=Sun */
+  var days  = new Date(S.year, S.month + 1, 0).getDate();
+  var grid  = document.getElementById('cal-days');
+  grid.innerHTML = '';
+
+  /* Empty leading cells */
+  for (var i = 0; i < first; i++) {
+    var e = document.createElement('div');
+    e.className = 'cal-day cal-empty';
+    grid.appendChild(e);
+  }
+
+  for (var d = 1; d <= days; d++) {
+    var dt    = new Date(S.year, S.month, d);
+    var key   = fmtKey(S.year, S.month + 1, d);
+    var dow   = dt.getDay(); /* 0=Sun,6=Sat */
+    var isPast    = dt < TODAY;
+    var isToday   = dt.getTime() === TODAY.getTime();
+    var isSunday  = dow === 0;
+    var bookedArr = BOOKED[key] || [];
+    var allSlots  = dow === 6 ? SATURDAY_SLOTS : WEEKDAY_SLOTS;
+    var available = allSlots.filter(function(s){ return bookedArr.indexOf(s) === -1; });
+    var isFull    = !isSunday && !isPast && available.length === 0;
+
+    var el = document.createElement('div');
+    el.textContent = d;
+    el.className   = 'cal-day';
+
+    if (isPast || isSunday) {
+      el.classList.add(isSunday ? 'cal-closed' : 'cal-past');
+      if (isSunday) el.title = 'Closed';
+    } else if (isFull) {
+      el.classList.add('cal-full', 'has-dot');
+      el.title = 'Fully booked';
+    } else {
+      el.classList.add('has-dot');
+      el.dataset.key  = key;
+      el.dataset.dow  = dow;
+      el.dataset.date = d;
+      el.addEventListener('click', function(){ pickDate(this); });
+    }
+
+    if (isToday) el.classList.add('cal-today');
+
+    /* Add dot */
+    var dot = document.createElement('div');
+    dot.className = 'cal-dot';
+    el.appendChild(dot);
+    if (isFull && el.querySelector('.cal-dot')) el.querySelector('.cal-dot').style.background = '#EF4444';
+
+    /* Highlight selected */
+    if (S.date === key) el.classList.add('cal-sel');
+
+    grid.appendChild(el);
+  }
+}
+
+function fmtKey(y, m, d) {
+  return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+}
+
+function fmtDateLabel(y, m, d) {
+  var days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var dt     = new Date(y, m, d);
+  return days[dt.getDay()] + ', ' + MONTHS[m] + ' ' + d + ', ' + y;
+}
+
+function pickDate(el) {
+  document.querySelectorAll('.cal-day').forEach(function(c){ c.classList.remove('cal-sel'); });
+  el.classList.add('cal-sel');
+  S.date      = el.dataset.key;
+  var parts   = S.date.split('-');
+  S.dateLabel = fmtDateLabel(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+  S.time      = null;
+
+  document.getElementById('sum-date').textContent = S.dateLabel;
+  document.getElementById('sum-date').classList.remove('empty');
+  document.getElementById('sum-time').textContent = 'Not selected yet';
+  document.getElementById('sum-time').classList.add('empty');
+
+  renderSlots(el.dataset.key, parseInt(el.dataset.dow));
+  updateStepper(2);
+}
+
+/* ── Time slots ────────────────────────────────────────────── */
+function renderSlots(key, dow) {
+  var card    = document.getElementById('card-slots');
+  var sub     = document.getElementById('slots-subtitle');
+  var grid    = document.getElementById('slots-grid');
+  var booked  = BOOKED[key] || [];
+  var allSlots = dow === 6 ? SATURDAY_SLOTS : WEEKDAY_SLOTS;
+  var parts   = key.split('-');
+  sub.textContent = fmtDateLabel(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2])) + ' · ET';
+
+  grid.innerHTML = '';
+  if (!allSlots.length) {
+    grid.innerHTML = '<div class="no-slots">No slots available on this day.</div>';
+    card.style.display = '';
+    return;
+  }
+
+  var amSlots = allSlots.filter(function(s){ return s.indexOf('AM') !== -1; });
+  var pmSlots = allSlots.filter(function(s){ return s.indexOf('PM') !== -1; });
+
+  var wrap = document.createElement('div');
+  wrap.className = 'slots-cols';
+
+  if (amSlots.length) {
+    var amLabel = document.createElement('div');
+    amLabel.className = 'slot-group-label';
+    amLabel.textContent = '☀️ Morning';
+    wrap.appendChild(amLabel);
+    amSlots.forEach(function(s) { wrap.appendChild(makeSlotBtn(s, booked)); });
+  }
+  if (pmSlots.length) {
+    var pmLabel = document.createElement('div');
+    pmLabel.className = 'slot-group-label';
+    pmLabel.textContent = '🌤️ Afternoon / Evening';
+    wrap.appendChild(pmLabel);
+    pmSlots.forEach(function(s) { wrap.appendChild(makeSlotBtn(s, booked)); });
+  }
+
+  grid.appendChild(wrap);
+  card.style.display = '';
+  card.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function makeSlotBtn(slot, booked) {
+  var btn = document.createElement('button');
+  btn.className  = 'slot-btn' + (booked.indexOf(slot) !== -1 ? ' slot-booked' : '');
+  btn.textContent = slot;
+  btn.disabled   = booked.indexOf(slot) !== -1;
+  if (!btn.disabled) {
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.slot-btn').forEach(function(b){ b.classList.remove('slot-sel'); });
+      btn.classList.add('slot-sel');
+      S.time = slot;
+      document.getElementById('sum-time').textContent = slot + ' ET';
+      document.getElementById('sum-time').classList.remove('empty');
+      updateStepper(3);
+    });
+  }
+  return btn;
+}
+
+/* ── Summary & stepper ─────────────────────────────────────── */
+function updateSummary() {
+  document.getElementById('sum-type').textContent = S.type + ' · ' + S.dur;
+}
+
+function updateStepper(step) {
+  [1,2,3].forEach(function(i){
+    var el = document.getElementById('stp-' + i);
+    el.classList.toggle('active', i === step);
+    el.classList.toggle('done',   i < step);
+  });
+}
+
+/* ── Booking ────────────────────────────────────────────────── */
+function bookAppt() {
+  /* Validate */
+  var ok = true;
+  ['a-fname','a-lname','a-email'].forEach(function(id){
+    var el  = document.getElementById(id);
+    var err = document.getElementById(id.replace('a-','') + '-err');
+    var valid = el.value.trim() && (id !== 'a-email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
+    el.classList.toggle('err', !valid);
+    if (err) err.classList.toggle('show', !valid);
+    if (!valid) ok = false;
+  });
+  if (!S.date) { alert('Please select a date.'); return; }
+  if (!S.time) { alert('Please select a time slot.'); return; }
+  if (!ok) return;
+
+  var btn  = document.getElementById('book-btn');
+  var txt  = document.getElementById('book-text');
+  var spin = document.getElementById('book-spin');
+  btn.disabled = true; txt.textContent = 'Confirming…'; spin.style.display = 'inline';
+
+  setTimeout(function(){
+    var ref  = 'UM-APT-' + Math.random().toString(36).substr(2,6).toUpperCase();
+    var name = document.getElementById('a-fname').value.trim() + ' ' + document.getElementById('a-lname').value.trim();
+    var email = document.getElementById('a-email').value.trim();
+
+    /* Build confirmation card */
+    var conf = document.getElementById('conf-card');
+    conf.innerHTML = [
+      row('Ref #',    ref),
+      row('Name',    name),
+      row('Type',    S.type),
+      row('Date',    S.dateLabel),
+      row('Time',    S.time + ' ET'),
+      row('Duration', S.dur),
+      row('Location', S.type === 'Virtual Consultation' ? 'Video call (link sent to ' + email + ')' : 'Unit 208 – 7250 Keele St, Vaughan ON'),
+    ].join('');
+
+    /* Hide form */
+    document.querySelector('.appt-grid').style.display = 'none';
+    document.getElementById('appt-success').style.display = 'block';
+    document.getElementById('appt-success').scrollIntoView({ behavior:'smooth', block:'start' });
+
+    /* All stepper done */
+    [1,2,3].forEach(function(i){
+      document.getElementById('stp-' + i).classList.remove('active');
+      document.getElementById('stp-' + i).classList.add('done');
+    });
+  }, 1800);
+}
+
+function row(k, v) {
+  return '<div class="conf-row"><span class="conf-key">' + k + '</span><span>' + v + '</span></div>';
+}
+
+/* ── Header scroll ─────────────────────────────────────────── */
+window.addEventListener('scroll', function(){
+  document.getElementById('site-header').classList.toggle('scrolled', window.scrollY > 60);
+}, { passive:true });
+
+/* ── Init ──────────────────────────────────────────────────── */
+renderCal();
+updateSummary();
+</script>
+</body>
+</html>

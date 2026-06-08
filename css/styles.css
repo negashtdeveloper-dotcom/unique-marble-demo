@@ -109,14 +109,14 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--f-head); line-height: 1.2; }
 .site-header.scrolled { box-shadow: var(--shadow); }
 .header-inner {
   display: flex; align-items: center; gap: 1.5rem;
-  padding-block: .6rem;
+  padding-block: .35rem;
 }
 .site-logo { flex-shrink: 0; }
 .site-logo a {
   display: flex; align-items: center;
 }
 .site-logo-img {
-  height: 78px; width: auto; display: block;
+  height: 110px; width: auto; display: block;
 }
 .site-nav { display: flex; align-items: center; gap: .15rem; flex: 1; justify-content: center; }
 .nav-item { position: relative; }
