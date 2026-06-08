@@ -231,7 +231,9 @@
     font-size: .7rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
   }
-  .mat-swatch { height: 100px; }
+  .mat-swatch { height: 100px; overflow: hidden; background: #f0ebe4; }
+.mat-swatch img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; transition:transform .5s cubic-bezier(.22,1,.36,1); }
+.mat-card:hover .mat-swatch img { transform:scale(1.07); }
   .mat-info { padding: .55rem .6rem .5rem; }
   .mat-name { font-size: .8rem; font-weight: 700; color: #1A1614; }
   .mat-type { font-size: .68rem; color: #9A8A7A; margin-top: .1rem; }
@@ -583,19 +585,19 @@
           <!-- Slabs panel -->
           <div class="mat-panel active mat-grid" id="mat-slabs">
             <div class="mat-card" data-mat="Panda" data-type="Porcelain Slab">
-              <div class="mat-swatch mat-panda"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/co-ZpyQ-hnHD4KS1/w:768/h:auto/f:best/ig:avif/q:mauto/id:9a9526871091073a46d9a78dc4aaf0e2/directUpload/EXTREME_porcelain_main-rotated.jpg" alt="Panda" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Panda</div><div class="mat-type">Slab · 5×10</div></div>
             </div>
             <div class="mat-card" data-mat="Black Onyx" data-type="Porcelain Slab">
-              <div class="mat-swatch mat-black-onyx"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/co-ZpyQ--0yS6Fim/w:768/h:auto/f:best/ig:avif/q:mauto/id:61c0a3a1c3cc9754016c472940420d77/directUpload/ALABASTRO_BLACK_2-scaled.jpg" alt="Black Onyx" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Black Onyx</div><div class="mat-type">Slab · 4×9</div></div>
             </div>
             <div class="mat-card" data-mat="Statuario Reale" data-type="Porcelain Slab">
-              <div class="mat-swatch mat-statuario"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/w:auto/h:auto/q:mauto/f:best/ig:avif/https://uniquemarble.ca/wp-content/uploads/Statuario-Reale-page-001.jpg" alt="Statuario Reale" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Statuario Reale</div><div class="mat-type">Slab · 5×10</div></div>
             </div>
             <div class="mat-card" data-mat="Calacatta Gold" data-type="Porcelain Slab">
-              <div class="mat-swatch mat-calacatta"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/w:auto/h:auto/q:mauto/f:best/ig:avif/https://uniquemarble.ca/wp-content/uploads/calacatta-gold.webp" alt="Calacatta Gold" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Calacatta Gold</div><div class="mat-type">Slab · 4×9</div></div>
             </div>
             <div class="mat-card" data-mat="Crystal Ice" data-type="Porcelain Slab">
@@ -611,19 +613,19 @@
           <!-- Stone panel -->
           <div class="mat-panel mat-grid" id="mat-stone">
             <div class="mat-card" data-mat="Taj Mahal" data-type="Natural Quartzite">
-              <div class="mat-swatch mat-taj"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/w:540/h:1080/q:mauto/f:best/ig:avif/https://uniquemarble.ca/wp-content/uploads/Taj-Mahal-Uniquemarble.jpg" alt="Taj Mahal" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Taj Mahal</div><div class="mat-type">Quartzite</div></div>
             </div>
             <div class="mat-card" data-mat="Bianco Carrara" data-type="Natural Marble">
-              <div class="mat-swatch mat-carrara"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/co-ZpyQ-lcdWenD3/w:768/h:auto/f:best/ig:avif/q:mauto/id:d2849f40c81eba1554998767bbbf3152/directUpload/ALABASTRO_2-scaled.jpg" alt="Bianco Carrara" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Bianco Carrara</div><div class="mat-type">Marble</div></div>
             </div>
             <div class="mat-card" data-mat="Nero Marquina" data-type="Natural Marble">
-              <div class="mat-swatch mat-nero"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/co-ZpyQ-j4nqW_Vd/w:540/h:1080/f:best/ig:avif/q:mauto/id:0b196302826e322f3a2e2ac1d747bc07/directUpload/NERO_MARQUINA_1-scaled.jpg" alt="Nero Marquina" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Nero Marquina</div><div class="mat-type">Marble</div></div>
             </div>
             <div class="mat-card" data-mat="Translucent Onyx" data-type="Natural Onyx">
-              <div class="mat-swatch mat-onyx"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/co-ZpyQ-SIhvyk0O/w:auto/h:auto/q:auto/id:7d02b53aac89c3bf74e01b47a614e586/directUpload/AMB_ALABASTRO_BALCK_BAGNO-scaled.jpg" alt="Translucent Onyx" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Translucent Onyx</div><div class="mat-type">Backlit Onyx</div></div>
             </div>
           </div>
@@ -631,15 +633,15 @@
           <!-- Tiles panel -->
           <div class="mat-panel mat-grid" id="mat-tiles">
             <div class="mat-card" data-mat="Verde Laminam" data-type="Porcelain Tile 24×48">
-              <div class="mat-swatch mat-verde"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/co-ZpyQ-pyWJR86y/w:auto/h:auto/q:auto/id:bd6e7a866077f4143b8d24b9a7f85a94/directUpload/AMB_PIETRA_GRIGIA_LIGHT_CUCINA-scaled.jpg" alt="Verde Laminam" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Verde Laminam</div><div class="mat-type">Tile · 24×48</div></div>
             </div>
             <div class="mat-card" data-mat="Grigio Antique" data-type="Porcelain Tile 24×24">
-              <div class="mat-swatch mat-grigio"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/co-ZpyQ-4etzAQvm/w:auto/h:auto/q:auto/id:662eea046d7aa86553fd855266253705/directUpload/AMB_PIETRA_GRIGIA_12MM-2CM-scaled.jpg" alt="Grigio Antique" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Grigio Antique</div><div class="mat-type">Tile · 24×24</div></div>
             </div>
             <div class="mat-card" data-mat="Rosso Verona" data-type="Marble Tile">
-              <div class="mat-swatch mat-rosso"></div>
+              <div class="mat-swatch"><img src="https://mlsselhfhdvl.i.optimole.com/nc6M_RE-USye6_1F/w:auto/h:auto/q:auto/id:a002c919550afabfaaebf420213fe781/https://prestige-canada.ca/Paonazzetto-Reale-page-001.jpg" alt="Rosso Verona" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
               <div class="mat-info"><div class="mat-name">Rosso Verona</div><div class="mat-type">Tile · 12×24</div></div>
             </div>
             <div class="mat-card" data-mat="Not Sure" data-type="Advise Me">
