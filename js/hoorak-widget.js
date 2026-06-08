@@ -41,7 +41,7 @@
 #hkW{position:fixed;bottom:1.5rem;right:1.5rem;z-index:2147483647;\
   display:flex;flex-direction:column;align-items:flex-end;gap:.65rem;\
   font-family:"DM Sans",system-ui,sans-serif;}\
-#hkW *{box-sizing:border-box;margin:0;padding:0;font-family:inherit;}\
+#hkW *{box-sizing:border-box;margin:0;font-family:inherit;}\
 \
 /* ── Panel ───────────────────────────────────────────── */\
 #hkPanel{\
