@@ -60,7 +60,7 @@
 /* ── Header ──────────────────────────────────────────── */\
 .hkHdr{\
   background:linear-gradient(160deg,'+C.hdr1+' 0%,'+C.hdr2+' 100%);\
-  padding:1.1rem 1.1rem .85rem;flex-shrink:0;\
+  padding:1.1rem 1.4rem .9rem;flex-shrink:0;\
 }\
 .hkHdrTop{display:flex;align-items:center;gap:.8rem;margin-bottom:.85rem;}\
 .hkAv{\
@@ -120,7 +120,7 @@
 \
 /* ── Chat area ───────────────────────────────────────── */\
 .hkChat{\
-  flex:1;overflow-y:auto;padding:.9rem 1rem;\
+  flex:1;overflow-y:auto;padding:1rem 1.25rem;\
   background:'+C.bg+';display:flex;flex-direction:column;\
   gap:.55rem;min-height:0;scroll-behavior:smooth;\
 }\
@@ -142,7 +142,7 @@
 \
 /* ── Bubbles ─────────────────────────────────────────── */\
 .hkBubble{\
-  max-width:78%;padding:.7rem .95rem;\
+  max-width:74%;padding:.75rem 1rem;\
   font-size:.875rem;line-height:1.55;\
   position:relative;\
 }\
@@ -248,7 +248,7 @@
 /* ── Input bar ───────────────────────────────────────── */\
 .hkInputBar{\
   display:flex;align-items:flex-end;gap:.5rem;\
-  padding:.7rem .9rem;\
+  padding:.75rem 1.1rem;\
   border-top:1px solid '+C.border+';background:'+C.white+';\
   flex-shrink:0;\
 }\
@@ -283,7 +283,7 @@
 \
 /* ── Footer ──────────────────────────────────────────── */\
 .hkFtr{\
-  padding:.45rem 1rem;background:'+C.white+';\
+  padding:.55rem 1.25rem;background:'+C.white+';\
   border-top:1px solid #f0e8df;\
   display:flex;align-items:center;justify-content:space-between;\
   flex-shrink:0;\
